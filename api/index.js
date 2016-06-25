@@ -27,7 +27,13 @@ function generateAPI(finderSrv, commentsSrv){
   }
 
   function find(req, res){
+    finderSrv.find(req.params.id)
+      .then(docs => {
+        if(!docs) return res.send(404);
 
+        return res.json(docs);
+      })
+      .catch(THROW(res));
   }
 
   function findComments(req, res){

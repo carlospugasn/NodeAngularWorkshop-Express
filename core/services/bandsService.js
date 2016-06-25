@@ -46,10 +46,26 @@ class BandsService {
   }
 
   find(_id) {
+
     return new Promise((resolve, reject) => {
-      this.db.findOne({docType: BAND, _id}, (err, band) => {
-        // TODO: Usar albumService.findByBand y buscar en la base de datos los artistas de la banda.
-        
+      this.db.findOne( {$and: [{_id: _id}, {docType: BAND}]}, (err, band) => {
+        if (err) return reject(err);
+
+            let complexQuery = {
+            $and: [
+              {
+                docType: ARTIST
+              }, {
+                _id: { $in: band.artists }
+              }]};
+
+          this.db.find(complexQuery, (err, artists) => {
+            if (err) return reject(err);
+
+            band.artists = artists;
+
+              resolve(band);
+          });
       });
     });
   }
