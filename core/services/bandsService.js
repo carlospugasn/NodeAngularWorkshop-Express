@@ -12,7 +12,7 @@ class BandsService {
     this.db = db;
     this.albumsService = AlbumsService;
   }
-  
+
   findAll() {
     return new Promise((resolve, reject) => {
       this.db.find({ docType: BAND }, (err, bands) => {
@@ -44,7 +44,7 @@ class BandsService {
       });
     });
   }
-  
+
   find(_id) {
     return new Promise((resolve, reject) => {
       this.db.findOne({docType: BAND, _id}, (err, band) => {
